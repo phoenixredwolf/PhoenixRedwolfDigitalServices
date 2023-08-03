@@ -1,0 +1,87 @@
+﻿@page "/contactus"
+@using PhoenixRedwolfDigitalServices.Models
+@using PhoenixRedwolfDigitalServices.Data
+@using Syncfusion.Blazor.SplitButtons
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+<div>
+    <h2>Contact Us</h2>
+    <p>If you would like to discuss how PhoenixRedwolf Digital Services can help your business, feel free to contact us.</p>
+
+    <div class="contact-info">
+        <p><strong>Email:</strong> <a href="mailto:b.vogtman@phoenixredwolf.com">b.vogtman@phoenixredwolf.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:(856) 347-0392">(856) 347-0392</a></p>
+    </div>
+</div>
+
+<EditForm Model="@contact" OnValidSubmit="SendContact">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            Name:
+            <InputText @bind-Value="contact.Name" />
+        </label>
+    </p>
+    <p>
+        <label>
+            Address:
+            <InputText @bind-Value="contact.Address" />
+        </label>
+    </p>
+    <p>
+        <label>
+            City:
+            <InputText @bind-Value="contact.City" />
+        </label>
+        <label>
+            State:
+            <SfDropDownButton Content="State">
+                <SplitButtons.DropDownMenuItems>
+                    @foreach(var state in stateList)
+                    {
+                        <DropDownMenuItem Text="@state.Abbr" Id="@state.Name"></DropDownMenuItem>
+                    }
+                </SplitButtons.DropDownMenuItems>
+                <DropDownButtonEvents ItemSelected="@ItemSelected"></DropDownButtonEvents>
+            </SfDropDownButton>
+        </label>
+    </p>
+
+</EditForm> 
+
+<p> Selected item = @contact.State</p>
+
+@code {
+    private string fileName = "Data\\state.json";
+    private string jsonString = "";
+    private Contact contact = new();
+    private List<State> stateList = new List<State>();
+    private string selectedState = "";
+
+    private void SendContact()
+    {
+
+    }
+
+    private void LoadJson()
+    {
+        using (StreamReader r = new StreamReader(fileName))
+        {
+            jsonString = r.ReadToEnd();
+            stateList = JsonSerializer.Deserialize<List<State>>(jsonString)!;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        LoadJson();
+    }
+
+    private void ItemSelected(MenuEventArgs args)
+    {
+        contact.State = args.Item.Text;
+    }
+
+}

@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="22.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="22.2.7" />
+  </ItemGroup>
+
 </Project>

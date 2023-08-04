@@ -37,26 +37,44 @@
         </label>
         <label>
             State:
-            <SfDropDownButton Content="State">
-                <SplitButtons.DropDownMenuItems>
+            <SfDropDownButton Content="State">                
+                <DropDownMenuItems>
                     @foreach(var state in stateList)
                     {
                         <DropDownMenuItem Text="@state.Abbr" Id="@state.Name"></DropDownMenuItem>
                     }
-                </SplitButtons.DropDownMenuItems>
+                </DropDownMenuItems>
                 <DropDownButtonEvents ItemSelected="@ItemSelected"></DropDownButtonEvents>
             </SfDropDownButton>
         </label>
+        <label>
+            <div class="dropdown">
+                State:
+                <button class="btn btn-primary dropdown-toggle" type="button" id="stateMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    State
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="stateMenuButton">
+                    @foreach (var state in stateList)
+                    {
+                        <li><a class="dropdown-item" @onclick="() => BSItemSelected(state.Abbr)">@state.Abbr</a></li>
+                    }
+                </ul>
+            </div>
+        </label>
     </p>
+
+   
 
 </EditForm> 
 
 <p> Selected item = @contact.State</p>
+<p> Selected item = @test.State</p>
 
 @code {
     private string fileName = "Data\\state.json";
     private string jsonString = "";
     private Contact contact = new();
+    private Contact test = new();
     private List<State> stateList = new List<State>();
     private string selectedState = "";
 
@@ -82,6 +100,11 @@
     private void ItemSelected(MenuEventArgs args)
     {
         contact.State = args.Item.Text;
+    }
+
+    private void BSItemSelected(string state)
+    {
+        test.State = state;
     }
 
 }
